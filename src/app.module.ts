@@ -6,6 +6,8 @@ import apiConfiguration from './config/api.config';
 import databaseConfig from './config/database.config';
 import { validate } from './config/env.validation';
 import { PrismaModule } from './prisma/prisma.module';
+import { ClientController } from './client/client.controller';
+import { ClientModule } from './client/client.module';
 
 @Module({
   imports: [
@@ -16,8 +18,9 @@ import { PrismaModule } from './prisma/prisma.module';
       validate,
       expandVariables: true,
     }),
+    ClientModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, ClientController],
   providers: [AppService],
 })
 export class AppModule {}
