@@ -7,5 +7,6 @@ import { ClientService } from './client.service';
   imports: [PrismaModule],
   controllers: [ClientController],
   providers: [ClientService],
+  exports: [ClientService],
 })
 export class ClientModule {}
