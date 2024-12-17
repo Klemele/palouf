@@ -23,7 +23,6 @@ FROM node:22.12.0-alpine AS production
 
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist/ ./dist
-RUN chown -R node:node /usr/src/app
 USER node
 EXPOSE 3000
 
