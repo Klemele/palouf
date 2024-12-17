@@ -1,0 +1,39 @@
+services:
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+    command: yarn start:dev
+    environment:
+      - PORT=${PORT}
+      - DATABASE_URL=${DATABASE_URL}
+    env_file:
+      - .env
+    ports:
+      - '3000:3000'
+    depends_on:
+      mysql:
+        condition: service_healthy
+  mysql:
+    image: mysql:9.1.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    env_file:
+      - .env
+    ports:
+      - '3306:3306'
+      - '33060:33060'
+    volumes:
+      - sql-data:/var/lib/postgresql/data:/var/lib/mysql
+      - ./init_db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      timeout: 20s
+      retries: 10
+
+volumes:
+  sql-data:
