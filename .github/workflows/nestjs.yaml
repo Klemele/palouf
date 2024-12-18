@@ -4,9 +4,21 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '**.ts'
+      - '**.js'
+      - 'package.json'
+      - 'yarn.lock'
+      - 'Dockerfile'
   pull_request:
     branches:
       - main
+    paths:
+      - '**.ts'
+      - '**.js'
+      - 'package.json'
+      - 'yarn.lock'
+      - 'Dockerfile'
 
 jobs:
   build:
