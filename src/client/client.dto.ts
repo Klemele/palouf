@@ -12,7 +12,7 @@ export class CreateClientDto {
   first_name: string;
 
   /**
-   * A client first name
+   * A client last name
    * @example Doe
    */
   @IsString()
@@ -21,4 +21,4 @@ export class CreateClientDto {
   last_name: string;
 }
 
-export class UpdateClientsto extends PartialType(CreateClientDto) {}
+export class UpdateClientDto extends PartialType(CreateClientDto) {}

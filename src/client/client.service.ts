@@ -15,23 +15,6 @@ export class ClientService {
     });
   }
 
-  async clients(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.clientsWhereUniqueInput;
-    where?: Prisma.clientsWhereInput;
-    orderBy?: Prisma.clientsOrderByWithRelationInput;
-  }): Promise<clients[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.clients.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
-  }
-
   async createClient(data: Prisma.clientsCreateInput): Promise<clients> {
     return this.prisma.clients.create({
       data,
