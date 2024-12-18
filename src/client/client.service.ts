@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { Prisma, clients } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
@@ -10,9 +10,17 @@ export class ClientService {
   async client(
     clientsWhereUniqueInput: Prisma.clientsWhereUniqueInput,
   ): Promise<clients | null> {
-    return this.prisma.clients.findUnique({
+    const client = await this.prisma.clients.findUnique({
       where: clientsWhereUniqueInput,
     });
+
+    if (!client) {
+      throw new NotFoundException(
+        `client with ${clientsWhereUniqueInput.id} does not exist.`,
+      );
+    }
+
+    return client;
   }
 
   async createClient(data: Prisma.clientsCreateInput): Promise<clients> {
@@ -25,6 +33,9 @@ export class ClientService {
     where: Prisma.clientsWhereUniqueInput;
     data: Prisma.clientsUpdateInput;
   }): Promise<clients> {
+    //Ensure client exists
+    await this.client({ id: params.where.id });
+
     const { where, data } = params;
     return this.prisma.clients.update({
       data,
@@ -33,6 +44,9 @@ export class ClientService {
   }
 
   async deleteClient(where: Prisma.clientsWhereUniqueInput): Promise<clients> {
+    //Ensure client exists
+    await this.client({ id: where.id });
+
     return this.prisma.clients.delete({
       where,
     });
