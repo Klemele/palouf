@@ -1,4 +1,4 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { PartialType } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateClientDto {
@@ -8,7 +8,6 @@ export class CreateClientDto {
    */
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
   first_name: string;
 
   /**
@@ -17,7 +16,6 @@ export class CreateClientDto {
    */
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
   last_name: string;
 }
 
