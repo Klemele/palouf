@@ -3,14 +3,15 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiCreatedResponse } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { clients as ClientModel } from '@prisma/client';
-import { CreateClientDto } from './client.dto';
+import { CreateClientDto, UpdateClientDto } from './client.dto';
 import { ClientEntity } from './client.entity';
 import { ClientService } from './client.service';
 
@@ -33,41 +34,75 @@ export class ClientController {
   ): Promise<ClientModel> {
     const { first_name, last_name } = createClientDto;
 
-    return this.clientService.createClient({
-      first_name,
-      last_name,
-    });
+    return new ClientEntity(
+      await this.clientService.createClient({
+        first_name,
+        last_name,
+      }),
+    );
   }
 
+  /**
+   * Retrieve a client
+   *
+   * @remarks This operation allows you to retrieve a client.
+   *
+   * @throws {404} Not found exception if the client does not exist.
+   */
+  @ApiOkResponse({ type: ClientEntity })
   @Get(':id')
-  async getClient(@Param('id', ParseIntPipe) id: string): Promise<ClientModel> {
-    return this.clientService.client({ id: Number(id) });
+  async getClient(@Param('id', ParseIntPipe) id: number): Promise<ClientModel> {
+    const client = await this.clientService.client({ id });
+
+    if (!client) {
+      throw new NotFoundException(`client with ${id} does not exist.`);
+    }
+
+    return new ClientEntity(client);
   }
 
+  /**
+   * Update a client
+   *
+   * @remarks This operation allows you to update a client.
+   *
+   * @throws {404} Not found exception if the client does not exist.
+   */
+  @ApiOkResponse({ type: ClientEntity })
   @Put(':id')
   async updateClient(
-    @Param('id', ParseIntPipe) id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body()
-    clientData: {
-      first_name?: string;
-      last_name?: string;
-    },
+    updateClientDto: UpdateClientDto,
   ): Promise<ClientModel> {
-    const { first_name, last_name } = clientData;
+    // Ensure client exists
+    await this.getClient(id);
 
-    // TODO: Handle client not found
-
-    return this.clientService.updateClient({
-      where: { id: Number(id) },
-      data: { first_name, last_name },
-    });
+    return new ClientEntity(
+      await this.clientService.updateClient({
+        where: { id: Number(id) },
+        data: { ...updateClientDto },
+      }),
+    );
   }
 
+  /**
+   * Delete a client
+   *
+   * @remarks This operation allows you to delete a client.
+   *
+   * @throws {404} Not found exception if the client does not exist.
+   */
+  @ApiOkResponse({ type: ClientEntity })
   @Delete(':id')
   async deleteClient(
-    @Param('id', ParseIntPipe) id: string,
+    @Param('id', ParseIntPipe) id: number,
   ): Promise<ClientModel> {
-    // TODO: Handle client not found
-    return this.clientService.deleteClient({ id: Number(id) });
+    // Ensure client exists
+    await this.getClient(id);
+
+    return new ClientEntity(
+      await this.clientService.deleteClient({ id: Number(id) }),
+    );
   }
 }
