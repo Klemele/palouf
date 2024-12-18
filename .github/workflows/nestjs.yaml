@@ -10,6 +10,7 @@ on:
       - 'package.json'
       - 'yarn.lock'
       - 'Dockerfile'
+      - '.github/workflows/nestjs.yaml'
   pull_request:
     branches:
       - main
@@ -19,6 +20,7 @@ on:
       - 'package.json'
       - 'yarn.lock'
       - 'Dockerfile'
+      - '.github/workflows/nestjs.yaml'
 
 jobs:
   build:
