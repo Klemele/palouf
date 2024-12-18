@@ -24,7 +24,7 @@ describe('ClientService', () => {
     idInserted = result.id;
   });
   afterEach(async () => {
-    await prismaService.clients.deleteMany({ where: {} });
+    await prismaService.clients.deleteMany({ where: { id: idInserted } });
   });
 
   describe('client', () => {

@@ -50,7 +50,10 @@ describe('HealthReportService', () => {
     );
   });
   afterEach(async () => {
-    await prismaService.clients.deleteMany({ where: {} });
+    await prismaService.clients.deleteMany({ where: { id: clientInserted } });
+    await prismaService.health_reports.deleteMany({
+      where: { client_id: clientInserted },
+    });
   });
 
   describe('healthReport', () => {
