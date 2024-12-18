@@ -48,8 +48,12 @@ jobs:
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
       - name: Push schema with Prisma
         run: yarn prisma db push
+        env:
+          DATABASE_URL: 'mysql://${{ secrets.MYSQL_USER }}:${{ secrets.MYSQL_PASSWORD }}@localhost:3306/${{ secrets.MYSQL_DATABASE }}?schema=public'
       - name: Tests
         run: yarn test:cov
+        env:
+          DATABASE_URL: 'mysql://${{ secrets.MYSQL_USER }}:${{ secrets.MYSQL_PASSWORD }}@localhost:3306/${{ secrets.MYSQL_DATABASE }}?schema=public'
       - name: Upload coverage reports
         uses: actions/upload-artifact@v4
         with:
