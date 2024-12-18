@@ -6,8 +6,6 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-    env_file:
-      - .env
     ports:
       - '3306:3306'
       - '33060:33060'
