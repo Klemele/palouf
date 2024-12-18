@@ -7,11 +7,11 @@ services:
       - sql-data:/var/lib/mysql
       - ./init_db:/docker-entrypoint-initdb.d
   api:
-    build: .
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
     command: yarn start:dev
-    environment:
-      - PORT=${PORT}
-      - MYSQL_HOST=mysql
     env_file:
       - .env
     ports:
