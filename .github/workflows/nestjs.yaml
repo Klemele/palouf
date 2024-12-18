@@ -39,8 +39,6 @@ jobs:
         run: yarn format:check
       - name: Lint
         run: yarn lint
-      - name: Build
-        run: yarn build
       - name: Setup docker compose
         run: docker compose --file compose-mysql.yaml up -d --wait --wait-timeout 120
         env:
@@ -52,6 +50,12 @@ jobs:
         run: yarn prisma db push
         env:
           DATABASE_URL: 'mysql://${{ secrets.MYSQL_USER }}:${{ secrets.MYSQL_PASSWORD }}@localhost:3306/${{ secrets.MYSQL_DATABASE }}?schema=public'
+      - name: Generate Prisma SQL
+        run: yarn prisma generate --sql
+        env:
+          DATABASE_URL: 'mysql://${{ secrets.MYSQL_USER }}:${{ secrets.MYSQL_PASSWORD }}@localhost:3306/${{ secrets.MYSQL_DATABASE }}?schema=public'
+      - name: Build
+        run: yarn build
       - name: Tests
         run: yarn test:cov
         env:
