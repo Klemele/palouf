@@ -8,14 +8,24 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { ApiCreatedResponse } from '@nestjs/swagger';
 import { clients as ClientModel } from '@prisma/client';
 import { CreateClientDto } from './client.dto';
+import { ClientEntity } from './client.entity';
 import { ClientService } from './client.service';
 
 @Controller('client')
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 
+  /**
+   * Create a new client
+   *
+   * @remarks This operation allows you to create a new client.
+   *
+   */
+
+  @ApiCreatedResponse({ type: ClientEntity })
   @Post()
   async createClient(
     @Body()
