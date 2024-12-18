@@ -1,7 +1,7 @@
 import { OmitType } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-enum Guidance {
+export enum Guidance {
   POSITIVE = 'positive',
   NEGATIVE = 'negative',
 }
