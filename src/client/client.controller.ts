@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
@@ -25,19 +24,15 @@ export class ClientController {
    * @remarks This operation allows you to create a new client.
    *
    */
-
   @ApiCreatedResponse({ type: ClientEntity })
   @Post()
   async createClient(
     @Body()
     createClientDto: CreateClientDto,
   ): Promise<ClientModel> {
-    const { first_name, last_name } = createClientDto;
-
     return new ClientEntity(
       await this.clientService.createClient({
-        first_name,
-        last_name,
+        ...createClientDto,
       }),
     );
   }
@@ -52,13 +47,7 @@ export class ClientController {
   @ApiOkResponse({ type: ClientEntity })
   @Get(':id')
   async getClient(@Param('id', ParseIntPipe) id: number): Promise<ClientModel> {
-    const client = await this.clientService.client({ id });
-
-    if (!client) {
-      throw new NotFoundException(`client with ${id} does not exist.`);
-    }
-
-    return new ClientEntity(client);
+    return new ClientEntity(await this.clientService.client({ id }));
   }
 
   /**
@@ -75,12 +64,9 @@ export class ClientController {
     @Body()
     updateClientDto: UpdateClientDto,
   ): Promise<ClientModel> {
-    // Ensure client exists
-    await this.getClient(id);
-
     return new ClientEntity(
       await this.clientService.updateClient({
-        where: { id: Number(id) },
+        where: { id: id },
         data: { ...updateClientDto },
       }),
     );
@@ -98,11 +84,6 @@ export class ClientController {
   async deleteClient(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<ClientModel> {
-    // Ensure client exists
-    await this.getClient(id);
-
-    return new ClientEntity(
-      await this.clientService.deleteClient({ id: Number(id) }),
-    );
+    return new ClientEntity(await this.clientService.deleteClient({ id: id }));
   }
 }

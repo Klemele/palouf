@@ -43,9 +43,8 @@ describe('ClientService', () => {
 
     it('should return null when client is not found', async () => {
       const id = 190128039;
-      const result = await service.client({ id });
 
-      expect(result).toBeNull();
+      expect(service.client({ id })).rejects.toThrow();
     });
   });
 
