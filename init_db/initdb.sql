@@ -32,7 +32,7 @@ CREATE TABLE `health_reports` (
   `guidance` varchar(8) NOT NULL,
   PRIMARY KEY (`year`,`client_id`),
   KEY `client_id` (`client_id`),
-  CONSTRAINT `health_reports_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
+  CONSTRAINT `health_reports_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 LOCK TABLES `health_reports` WRITE;

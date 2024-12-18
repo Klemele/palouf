@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "darwin-arm64", "linux-musl-arm64-openssl-3.0.x"]
 }
 
@@ -19,7 +19,7 @@ model health_reports {
   year      Int
   client_id Int
   guidance  String  @db.VarChar(8)
-  clients   clients @relation(fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "health_reports_ibfk_1")
+  clients   clients @relation(fields: [client_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "health_reports_ibfk_1")
 
   @@id([year, client_id])
   @@index([client_id], map: "client_id")
