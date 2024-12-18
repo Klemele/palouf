@@ -12,11 +12,11 @@ services:
       - '3306:3306'
       - '33060:33060'
     volumes:
-      - sql-data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     healthcheck:
       test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
       timeout: 20s
       retries: 10
 
 volumes:
-  sql-data:
+  mysql-data:

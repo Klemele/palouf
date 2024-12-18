@@ -39,6 +39,15 @@ jobs:
         run: yarn lint
       - name: Build
         run: yarn build
+      - name: Setup docker compose
+        run: docker compose --file compose-mysql.yaml up -d --wait --wait-timeout 120
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+      - name: Push schema with Prisma
+        run: yarn prisma db push
       - name: Tests
         run: yarn test:cov
       - name: Upload coverage reports
