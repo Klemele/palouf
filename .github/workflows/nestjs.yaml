@@ -30,4 +30,8 @@ jobs:
       - name: Tests
         run: yarn test
       - name: Build the Docker image
-        run: docker build . --file Dockerfile
+        run: |
+          docker build . --file Dockerfile \
+            --tag ${{ github.repository }}:${{ github.sha }} \
+            --cache-from type=gha \
+            --cache-to type=gha,mode=max
