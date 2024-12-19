@@ -58,6 +58,18 @@ generate the primsa client
 $ yarn prisma generate
 ```
 
+initialize the database
+
+```bash
+$ yarn prisma db push
+```
+
+generate the primsa client sql
+
+```bash
+$ yarn prisma generate --sql
+```
+
 Then, you can run the project using the following command:
 
 ```bash
