@@ -11,16 +11,18 @@ services:
       dockerfile: Dockerfile
       context: .
       target: development
-    command: yarn start:dev
+    command: sh -c "yarn prisma generate --sql && yarn start:dev"
     env_file:
       - .env
     ports:
       - '3000:3000'
     volumes:
       - .:/usr/src/app
+      - node_modules:/usr/src/app/node_modules
     depends_on:
       mysql:
         condition: service_healthy
 
 volumes:
   sql-data:
+  node_modules:
